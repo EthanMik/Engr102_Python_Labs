@@ -4,9 +4,8 @@
 #
 # Name:       Ethan Mikolaycik
 # Section:    563
-# Assignment: Print Math 
+# Assignment: Using variables 
 # Date:       8/27/2025
-# 
 
 from math import *
 
