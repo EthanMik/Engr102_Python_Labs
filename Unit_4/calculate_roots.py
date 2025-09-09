@@ -10,12 +10,11 @@
 # Calculate roots
 
 import math
-import cmath
 import sys
 
-a = 1
-b = 4
-c = 5
+# a = 0
+# b = 2
+# c = 3
 
 a = int(input("Please enter the coefficient A: "))
 b = int(input("Please enter the coefficient B: "))
@@ -25,29 +24,30 @@ if a == 0 and b == 0:
     print(f"You entered an invalid combination of coefficients!")
     sys.exit(0)
 
+if (a == 0):
+    print(f"The root is x = {(-c / b):.1f}")
+    sys.exit(0)
+
 x1 = 0
 x2 = 0
 
 i = 0
 j = 0
 
-append = ""
-
-try:
-    if (b**2 - 4*a*c < 0) {
-        
-    }
-    i = math.sqrt(b**2 - 4*a*c) / (2*a)
-except Exception as e:
-    i = cmath.sqrt(b**2 - 4*a*c) / (2*a)
-
 j = (-b) / (2*a)
-x1 = j + i
-x2 = j - i
+
+if (b**2 - 4*a*c < 0):
+    i = "i"
+    x1 = str(round(j, 1)) + " + 1.0i"
+    x2 = str(round(j, 1)) + " - 1.0i"
+else:
+    i = math.sqrt(b**2 - 4*a*c) / (2*a)
+    x1 = str(round(j + i, 1))
+    x2 = str(round(j - i, 1))
 
 if (i == 0):
-    print(f"The root is x = {x1:.1f}")
+    print(f"The root is x = {x1}")
 else:
-    print(f"The roots are x = {x1:.1f} and x = {x2:.1f}")
+    print(f"The roots are x = {x1} and x = {x2}")
 
 
