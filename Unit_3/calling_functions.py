@@ -9,6 +9,10 @@
 
 from math import *
 
+def printresult(shape, side, area):
+    '''Print the result of the calculation'''
+    print(f'A {shape} with side {side:.2f} has area {area:.3f}')
+
 def triangle_area(sides):
     return (sqrt(3)/4)*sides**2
 
@@ -26,8 +30,8 @@ def reg_dodecagon_area(sides):
 
 # Compute areas
 side_length = float(input("Please enter the side length: \n"))
-print(f"A triangle with side {side_length:.2f} has area {triangle_area(side_length):.3f}")
-print(f"A square with side {side_length:.2f} has area {rectangle_area(side_length):.3f}")
-print(f"A pentagon with side {side_length:.2f} has area {reg_pentagon_area(side_length):.3f}")
-print(f"A hexagon with side {side_length:.2f} has area {reg_hexagon_area(side_length):.3f}")
-print(f"A dodecagon with side {side_length:.2f} has area {reg_dodecagon_area(side_length):.3f}")
+printresult("triangle", side_length, triangle_area(side_length))
+printresult("square", side_length, rectangle_area(side_length))
+printresult("pentagon", side_length, reg_pentagon_area(side_length))
+printresult("hexagon", side_length, reg_hexagon_area(side_length))
+printresult("dodecagon", side_length, reg_dodecagon_area(side_length))
