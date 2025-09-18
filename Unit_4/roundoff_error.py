@@ -11,6 +11,8 @@ from math import *
 
 # Demonstrate roundoff error
 
+############ Part A ############ 
+
 a = 1.0 / 7.0
 print(f"a = {a}")
 
@@ -29,11 +31,15 @@ print(f"y = x * x * 3 = {y:.1f}")
 z = x * 3 * x
 print(f"z = x * 3 * x = {z}")
 
+############ Part B ############ 
+
 bf = abs(b - f) < 1e-10 
 print(f"b and f are equal within tolerance of 1e-10")
 
 yz = abs(y - z) < 1e-10 
 print(f"y and z are equal within tolerance of 1e-10")
+
+############ Part C ############ 
 
 m = 0.1
 print(f"m = {m}")
