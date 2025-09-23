@@ -15,7 +15,7 @@ def pyramid_surface_area(cube_length: float, layers: int) -> float:
     cube_face_area = cube_length * cube_length
     exposed_sides = 6
     surface_area = sum(exposed_sides * cube_face_area, layers - 1)
-    surface_area += 5 * cube_face_area * layers
+    surface_area += (exposed_sides - 1) * cube_face_area * layers
     return surface_area
 
 

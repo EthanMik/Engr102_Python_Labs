@@ -20,6 +20,7 @@ def approx_natural_log(x: float, tolerance: float) -> float:
         if abs(term) >= tolerance:
             natural_log += term
         n += 1
+        
     return float(natural_log)
 
 x_value = float(input("Enter a value for x: "))
