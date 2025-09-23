@@ -7,16 +7,17 @@
 # Assignment: Using variables 
 # Date:       8/27/2025
 
+def sum(a, n):
+    return a * n * (n + 1) / 2
+
 # Calcute pyramid surface area
 def pyramid_surface_area(cube_length: float, layers: int) -> float:
     cube_face_area = cube_length * cube_length
-    suraface_area = 0
     exposed_sides = 6
-    for i in range(1, layers + 1):
-        if (i == layers):
-            exposed_sides = 5
-        suraface_area += i * cube_face_area * exposed_sides
-    return float(suraface_area)
+    surface_area = sum(exposed_sides * cube_face_area, layers - 1)
+    surface_area += 5 * cube_face_area * layers
+    return surface_area
+
 
 side_length = float(input("Enter the side length in meters: "))
 layers = int(input("Enter the number of layers: "))
