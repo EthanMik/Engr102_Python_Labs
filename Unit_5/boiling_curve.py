@@ -14,6 +14,7 @@ def find_range(points: list[list[float]], x: int) -> list[list[float]]:
     for i in range(len(points) - 1):
         current_x = points[i][0]
         next_x = points[i + 1][0] 
+        # If points are in range then return that range
         if x > current_x and x < next_x:
             return [points[i], points[i+1]]
         
@@ -41,19 +42,7 @@ POINTS = [
     [1200, 1.5 * 10**6]
 ]
 
-# Zybooks formatted output
-temp = float(input("Enter the excess temperature: "))
-temp_range = find_range(POINTS, temp) 
-if temp_range == None: print("Surface heat flux is not available")
-else: print(f"The surface heat flux is approximately {interpolate_base10(temp_range, temp):.0f} W/m^2")
-
-# Zybooks wants 9 comments for some godforsaken reason so
-# comment 1 
-# comment 2
-# comment 3 
-# comment 4 
-# comment 5 
-# comment 6 
-# comment 7 
-# comment 8 
-# comment 9 
+temp = float(input("Enter the excess temperature: ")) # Get user input
+temp_range = find_range(POINTS, temp) # Find a range to interpolate between
+if temp_range == None: print("Surface heat flux is not available") # if no range is found then dont execute code
+else: print(f"The surface heat flux is approximately {interpolate_base10(temp_range, temp):.0f} W/m^2") # interpolate and find value
