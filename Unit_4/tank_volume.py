@@ -15,10 +15,10 @@ def volume(H, h, r):
 
     if h <= r:
         v = (math.pi * h**2 * (3 * r - h)) / 3
-    elif h <= H:
-        v = (math.pi * r**2 * h) - (math.pi * (r - (h - H))**2 * (3 * r - (h - H))) / 3
-    else:
-        v = (math.pi * r**2 * H)
+    elif h > r and h < H - r:
+        v = ((2 * math.pi * r**3) / 3) + (math.pi * r**2 * (h - r))
+    elif h > H - r:
+        v = ((4 * math.pi * r**3) / 3) + (math.pi * r**2 * (H - (2 * r))) - ((math.pi * (H - h)**2 * (3 * r - (H - h))) / 3)
 
     return v
 
