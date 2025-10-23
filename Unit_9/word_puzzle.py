@@ -8,7 +8,7 @@
 # Date:       8/27/2025
 
 def get_valid_letters(puzzle: str):
-    letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     seen = ""
     for char in puzzle:
         if not char in seen and char in letters:
@@ -16,10 +16,11 @@ def get_valid_letters(puzzle: str):
         if len(seen) >= 10: break
     return seen
 
-def is_valid_guess(valid_letters: str, guess: str) -> bool:
+def is_valid_guess(valid_letters: str, guess: str):
+    return set(valid_letters) == set(guess) and len(guess) == 10
     seen = ""
     for char in guess:
-        if not char in seen and char in valid_letters:
+        if (not (char in seen)) and (char in valid_letters):
             seen += char
     if len(seen) == 10: return True
     return False
@@ -71,10 +72,16 @@ def main():
     print_puzzle(puzzle)
     print()
     guess = input("Enter your guess, for example ABCDEFGHIJ: ")
-    if len(get_valid_letters(puzzle)) != 10: print("Try again!")
-    if not is_valid_guess(get_valid_letters(puzzle), guess): print("Your guess should contain exactly 10 unique letters used in the puzzle.")
+    if not is_valid_guess(get_valid_letters(puzzle), guess): 
+        print("Your guess should contain exactly 10 unique letters used in the puzzle.")
+        return
+    
     div, quo, divisor, rem = make_numbers(puzzle, guess) 
-    if check_user_guess(div, quo, divisor, rem): print("Good job!")
+
+    if check_user_guess(div, quo, divisor, rem): 
+        print("Good job!")
+    else:
+        print("Try again!")        
 
 if __name__ == '__main__':
     main()
