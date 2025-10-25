@@ -15,7 +15,8 @@ w = float(input("Enter the width of the door: "))
 
 # This is wrong please someone help!!!
 r = (w / 2)
-rectange_area = w * (3/4) * h
+door_height = h - (w * 0.2607)
+rectange_area = w * h
 circle_area = (1/4) * pi * r**2
 door_area = rectange_area + circle_area
 print(f"The area of the door is {door_area:.3f}\n")
@@ -32,3 +33,7 @@ print(f"The surface area of the pyramid is {surface_area:.2f}\n")
 
 print("Part 3")
 a = float(input("Enter the area of a triangle: "))
+
+a_
+area = sqrt(4 * a / sqrt(3))
+iso = 

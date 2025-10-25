@@ -11,12 +11,18 @@ from math import *
 
 # part a
 def parta(nums: list[int]):
-    s = sorted(nums)
-    return [s[0], s[len(s) // 2], s[-1]]
+    s = sorted(nums) # comment
+    i = len(s) // 2
+    med = s[i]
+    if len(s) % 2 == 0: med = 0
+    return (s[0], med, s[-1])
+
+print(parta([1, 2, 3, 9, 8, 7, 6, 5, 4]))
+print(parta([-3.4, -7.5, -2.1, 2.1, 9.6, 4.6]))
 
 # part b
 def partb(time: list[float], dist: list[float]):
-    velocity = []
+    velocity = [] # comment
     for i, val in enumerate(time[:-1]):
         slope = (dist[i + 1] - dist[i]) / (time[i + 1] - time[i])
         velocity.append(slope)
@@ -27,24 +33,32 @@ def partc(nums: list[float]):
     for i in range(len(nums)):
         for j in range(len(nums)):
             if i == j: continue
-            if nums[i] + nums[j] == 2029: 
+            if nums[i] + nums[j] == 2029:  # comment
                 return nums[i] * nums[j]
     return False
 
 # part d
 def partd(n: int):
-    pass 
+    for k in range(2, n, 2):
+        start = n // k - (k - 1) # comment
+        if start % 2 != 0: continue
+        sum = 0
+        sums_list = [start]
+        while sum < n:
+            sum += start
+            if sum == n: return sums_list
+            start += 2
+            sums_list.append(start)
+    return False
 
 # part e
 def parte(r_sphere: float, r_hole: float):
-    return (4 * pi / 3) * (r_sphere**2 - r_hole**2)**1.5
+    return (4 * pi / 3) * (r_sphere**2 - r_hole**2)**1.5 # comment
 
 # part f
 def partf(char: str, name: str, company: str, email: str):
     card = [name, company, email]
-    width = len(max(card))
-    if width % 2 == 0: width += 6
-    else: width += 4 
+    width = len(max(card, key=len)) + 4 # comment
     top = char * (width + 2)
 
     card_full = []
@@ -58,7 +72,7 @@ def partf(char: str, name: str, company: str, email: str):
 
 # part g
 def partg(x: float, tolerance: float):
-    if x < -1 or x > 1: return None
+    if x < -1 or x > 1: return None # comment
     sum = 0
     n = 1
     v = 1
