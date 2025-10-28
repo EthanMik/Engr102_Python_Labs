@@ -49,6 +49,7 @@ def partd(n: int):
             if sum == n: return sums_list
             start += 2
             sums_list.append(start)
+            
     return False
 
 # part e
