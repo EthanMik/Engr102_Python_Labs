@@ -109,36 +109,152 @@ chocolates = {1: ["milk", "round", "toffee", "sprinkles"],
 100: ["dark", "rectangle", "strawberry", "white chocolate drizzle"],
 }
 
+from typing import Dict, List, Tuple
+
+def make_boxes(chocolates: Dict[int, List[str]]) -> List[List[int]]:
+    ids = list(chocolates.keys())
+    TRUFFLES_PER_BOX = 4
+
+    attrs: Dict[int, Tuple[str, str, str, str]] = {i: tuple(chocolates[i]) for i in ids}
+
+    def is_dark(tid: int) -> bool:
+        return attrs[tid][0] == "dark"
+
+    # Heuristic: try "hard" items first (dark + square/rectangle)
+    def sort_key(tid: int) -> Tuple[int, int]:
+        t, s, _, _ = attrs[tid]
+        return (-(t == "dark"), -(s in ("square", "rectangle")))
+    
+    ids.sort(key=sort_key)
+
+    def can_add(box: List[int], tid: int) -> bool:
+        if len(box) >= TRUFFLES_PER_BOX:
+            return False
+        
+        if any(attrs[x] == attrs[tid] for x in box):
+            return False
+
+        t, s, f, top = attrs[tid]
+        fillings = {attrs[x][2] for x in box}
+        toppings = {attrs[x][3] for x in box}
+        shapes   = {attrs[x][1] for x in box}
+
+        # Pairwise incompatibilities
+        if ("caramel" in fillings and f == "vanilla") or ("vanilla" in fillings and f == "caramel"):
+            return False
+        if ("sprinkles" in toppings and top == "nuts") or ("nuts" in toppings and top == "sprinkles"):
+            return False
+        if ("square" in shapes and s == "rectangle") or ("rectangle" in shapes and s == "square"):
+            return False
+
+        # Darks constraint (0 allowed; otherwise 2–3)
+        before = sum(attrs[x][0] == "dark" for x in box)
+        after  = before + (t == "dark")
+        if after > 3:
+            return False
+
+        slots_left = TRUFFLES_PER_BOX - (len(box) + 1)
+
+        # If we would have exactly 1 dark, we must still have at least one slot to reach 2.
+        if after == 1 and slots_left < 1:
+            return False
+
+        # If we already have darks (after >= 1), we must be able to reach at least 2 by the end.
+        # (after==0 is fine; we may finish with 0.)
+        if after >= 1 and after + slots_left < 2:
+            return False
+
+        return True
+
+    def box_valid(box: List[int]) -> bool:
+        if len(box) != TRUFFLES_PER_BOX:
+            return False
+        darks = sum(attrs[x][0] == "dark" for x in box)
+        # 0 is okay; otherwise 2–3
+        return darks == 0 or 2 <= darks <= 3
+
+    total_boxes = len(ids) // TRUFFLES_PER_BOX
+    boxes: List[List[int]] = []
+
+    def remaining_capacity() -> int:
+        return total_boxes * TRUFFLES_PER_BOX - sum(len(b) for b in boxes)
+
+    # Canonical snapshot for memoization (order-free)
+    def normalize_state() -> Tuple[Tuple[int, ...], ...]:
+        return tuple(sorted(tuple(sorted(b)) for b in boxes if b))
+
+    visited = set()  # (idx, normalized_state)
+
+    def darks_left_from(i: int) -> int:
+        # Remaining darks among ids[i:]
+        return sum(1 for k in ids[i:] if is_dark(k))
+
+    def place_next(idx: int) -> bool:
+        # Base: all placed?
+        if idx == len(ids):
+            return len(boxes) == total_boxes and all(box_valid(b) for b in boxes)
+
+        # Not enough total slots left?
+        if remaining_capacity() < (len(ids) - idx):
+            return False
+
+        # Prune on darks feasibility:
+        boxes_darks = [sum(is_dark(x) for x in b) for b in boxes]
+        ones_need_dark = sum(1 for d in boxes_darks if d == 1)  # each needs +1 dark
+        darks_left = darks_left_from(idx)
+
+        # If we can't supply at least one more dark to every 1-dark box, dead.
+        if ones_need_dark > darks_left:
+            return False
+
+        # Also ensure we have enough capacity to absorb all remaining darks without exceeding 3/box
+        dark_slots_available = sum(3 - d for d in boxes_darks) + 3 * (total_boxes - len(boxes))
+        if darks_left > dark_slots_available:
+            return False
+
+        # Memoize
+        key = (idx, normalize_state())
+        if key in visited:
+            return False
+        visited.add(key)
+
+        tid = ids[idx]
+
+        # 1) Try existing boxes
+        for b in boxes:
+            if not can_add(b, tid):
+                continue
+
+            b.append(tid)
+
+            # Validate immediately if filled
+            if len(b) == TRUFFLES_PER_BOX and not box_valid(b):
+                b.pop()
+                continue
+
+            if place_next(idx + 1):
+                return True
+
+            b.pop()
+
+        # 2) Start a new box
+        if len(boxes) < total_boxes:
+            boxes.append([tid])
+            if place_next(idx + 1):
+                return True
+            boxes.pop()
+
+        return False
+
+    if place_next(0):
+        return boxes
+    return []
 
 
-def make_boxes(chocolates: dict) -> list[list]:
-    # no two truffles can be same
-    # caramel and vanilla creme cannot be in same box
-    # sprinkes and nuts cannot be in same box
-    # rectangles and squares cannot be in same box
-    # boxes must contain two dark choclate truffles, no more than 3
-    truffle_num = 4
-    boxes_num = len(chocolates) / truffle_num
+if __name__ == "__main__":
+    boxes = make_boxes(chocolates)
+    print(f"Made {len(boxes)} boxes.")
+    for i, b in enumerate(boxes, 1):
+        print(f"Box {i}: {b}")
 
-    def sort_bucket(bucket: list, segregation: str) -> list:
-        bucket1 = []
-        bucket2 = []
-        for idx, val in enumerate(bucket):
-            if segregation in chocolates[val]:
-                bucket1.append(val)
-            else:
-                bucket2.append(val)
-        return [bucket1, bucket2]
 
-    buckets = [i + 1 for i in range(len(chocolates))]
-    # Sort out all caramels from vanilla creme
-    buckets = sort_bucket(buckets, "caramel")
-    for idx, bucket in enumerate(buckets):
-        buckets[idx] = sort_bucket(bucket, "sprinkles") 
-    for b in buckets:
-        for idx, bucket in enumerate(b):
-            b[idx] = sort_bucket(bucket, "rectangle") 
-
-    print(buckets)
-
-make_boxes(chocolates)
