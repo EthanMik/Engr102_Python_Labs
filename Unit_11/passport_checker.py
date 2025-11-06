@@ -8,7 +8,7 @@
 # Date:       8/27/2025
 
 def is_passport_valid(passport: dict):
-    iyr = type(passport.get("byr")) == type("")
+    iyr = type(passport.get("iyr")) == type("")
     eyr = type(passport.get("eyr")) == type("")
     hgt = type(passport.get("hgt")) == type("")
     hcl = type(passport.get("hcl")) == type("")
@@ -18,41 +18,39 @@ def is_passport_valid(passport: dict):
 
     return iyr and eyr and hgt and hcl and ecl and pid and cid
 
-def append_passport(path: str, passport: dict):
-    if not (passport): return False
-
-    passport_str = ""
-    for idx, key in enumerate(passport):
-        if idx < len(passport) - 1:
-            passport_str += key + ":" + passport[key] + " "
-        else:
-            passport_str += key + ":" + passport[key] + "\n"
-    
-    return True
-
 def write_valid_passports(passport_path: str, valid_passports_path: str) -> int:
     passport = {}
+    passports = ""
     passport_str = ""
     count = 0
+
     with open(passport_path, "r") as f:
-        for line in f:
+        lines = f.readlines()
+        lines.append("\n")
+        for idx, line in enumerate(lines[:-1]):
+
             if line.strip() != "":
-                pairs = line.split()
+                pairs = line.strip().split()
                 pairs = [p.split(":") for p in pairs]
                 passport.update(pairs)
-            else:
+                passport_str += line
+
+            if lines[idx + 1].strip() == "":
                 if is_passport_valid(passport):
-                    passport_str += line
+                    passports += passport_str + "\n"
                     count += 1
+
+                passport_str = ""
                 passport = {}
-    print(passport_str)
+
+
     with open(valid_passports_path, "w") as f:
-        f.write(passport_str) 
+        f.write(passports.strip()) 
 
     return count
 
-# passports_path = "Unit_11/scanned_passports.txt"
 passports_path = input("Enter the name of the file: ")
+# passports_path = "scanned_passports.txt"
 valid_passports_path = "valid_passports.txt"
 
 c = write_valid_passports(passports_path, valid_passports_path)
