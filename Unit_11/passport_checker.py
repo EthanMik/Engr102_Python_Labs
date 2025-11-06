@@ -19,7 +19,7 @@ def is_passport_valid(passport: dict):
     return iyr and eyr and hgt and hcl and ecl and pid and cid
 
 def append_passport(path: str, passport: dict):
-    if not is_passport_valid(passport): return False
+    if not (passport): return False
 
     passport_str = ""
     for idx, key in enumerate(passport):
@@ -28,13 +28,11 @@ def append_passport(path: str, passport: dict):
         else:
             passport_str += key + ":" + passport[key] + "\n"
     
-    with open(path, "a") as f:
-        f.write(passport_str)
-
     return True
 
 def write_valid_passports(passport_path: str, valid_passports_path: str) -> int:
     passport = {}
+    passport_str = ""
     count = 0
     with open(passport_path, "r") as f:
         for line in f:
@@ -43,9 +41,13 @@ def write_valid_passports(passport_path: str, valid_passports_path: str) -> int:
                 pairs = [p.split(":") for p in pairs]
                 passport.update(pairs)
             else:
-                if append_passport(valid_passports_path, passport):
+                if is_passport_valid(passport):
+                    passport_str += line
                     count += 1
                 passport = {}
+    print(passport_str)
+    with open(valid_passports_path, "w") as f:
+        f.write(passport_str) 
 
     return count
 
