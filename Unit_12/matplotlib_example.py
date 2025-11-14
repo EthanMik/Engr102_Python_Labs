@@ -23,7 +23,7 @@ def plot1():
     plt.ylabel('y')
     plt.title('Parabola plots with varying focal length')
     plt.legend()
-    plt.show()
+    plt.figure()
 
 def plot2():
     domain = (-4.0, 4.0)
@@ -38,7 +38,7 @@ def plot2():
     plt.xlabel('x values')
     plt.ylabel('y values')
     plt.title('Plot of cubic polynomial')
-    plt.show()
+    plt.figure()
 
 def plot3():
 
@@ -47,16 +47,23 @@ def plot3():
     x = np.linspace(domain[0], domain[1])
 
     plt.subplot(211)
-    plt.plot(x, np.cos(x), 'red')
+    plt.plot(x, np.cos(x), 'maroon', label="cos(x)")
+    plt.yticks([-1, 0, 1])
+    plt.grid(True)
+    plt.legend(loc='lower right')
     plt.ylabel('y=cos(x)')
 
     plt.subplot(212)
-    plt.plot(x, np.sin(x), 'gray')
+    plt.plot(x, np.sin(x), 'gray', label='sin(x)')
     plt.ylabel('y=sin(x)')
-
+    plt.legend(loc='upper right')
     plt.suptitle('Plot of cos(x) and sin(x)')
+    plt.yticks([-1, 0, 1])
+    plt.xlabel('x')
     plt.grid(True)
-    plt.show()
 
+plot1()
+plot2()
 plot3()
+plt.show()
 
