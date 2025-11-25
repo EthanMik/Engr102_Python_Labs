@@ -25,6 +25,6 @@ class Game:
         for player in self.players:
             if not player.turn_over():
                 count += 1
-        if count <= 1:
+        if count <= 0:
             return True
         return False    
