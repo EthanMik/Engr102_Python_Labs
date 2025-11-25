@@ -1,16 +1,28 @@
 import tkinter as tk
 from player import Player
 from game import Game
+from util import *
 import display
 import time
 
+deck_str = """1 
+ 2 2 
+ 3 3 3 
+ 4 4 4 4 
+ 5 5 5 5 5
+ 6 6 6 6 6 6
+ 7 7 7 7 7 7 7
+ 8 8 8 8 8 8 8 8
+ 9 9 9 9 9 9 9 9 9
+ 10 10 10 10 10 10 10 10 10 10
+ 11 11 11 11 11 11 11 11 11 11 11
+ 12 12 12 12 12 12 12 12 12 12 12 12"""
+
 def build_deck() -> list:
     deck = []
-    with open("Unit_13/Flip_7/deck.txt", "r") as file:
-        for line in file:
-            for card in line.strip().split(' '):
-                card_value = int(card.strip())
-                deck.append(card_value)
+    for line in deck_str.strip().split('\n'):
+        for card in line.split():
+            deck.append(int(card))
     return deck
 
 FLIP_7_DECK = build_deck()

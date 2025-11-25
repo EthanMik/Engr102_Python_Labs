@@ -1,6 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 from player import Player
+from util import *
 
 card_images = []
 
@@ -23,11 +24,11 @@ stand_button = None
 def create_game_buttons():
     global hit_button, stand_button
 
-    hit_img = tk.PhotoImage(file="Unit_13/Flip_7/assets/hit_button.png")
-    hit_hover_img = tk.PhotoImage(file="Unit_13/Flip_7/assets/hit_button_hover.png")
+    hit_img = tk.PhotoImage(file=resource_path("assets/hit_button.png"))
+    hit_hover_img = tk.PhotoImage(file=resource_path("assets/hit_button_hover.png"))
 
-    stand_img = tk.PhotoImage(file="Unit_13/Flip_7/assets/stand_button.png")
-    stand_hover_img = tk.PhotoImage(file="Unit_13/Flip_7/assets/stand_button_hover.png")
+    stand_img = tk.PhotoImage(file=resource_path("assets/stand_button.png"))
+    stand_hover_img = tk.PhotoImage(file=resource_path("assets/stand_button_hover.png"))
 
     def on_enter_hit(e):
         e.widget.config(image=hit_hover_img)
@@ -101,14 +102,14 @@ def create_start_buttons():
     global increment_players_button, decrement_players_button
     global start_button
 
-    decrement_img = tk.PhotoImage(file="Unit_13/Flip_7/assets/decrement_button.png")
-    decrement_img_hover = tk.PhotoImage(file="Unit_13/Flip_7/assets/decrement_button.png")
+    decrement_img = tk.PhotoImage(file=resource_path("assets/decrement_button.png"))
+    decrement_img_hover = tk.PhotoImage(file=resource_path("assets/decrement_button.png"))
 
-    increment_img = tk.PhotoImage(file="Unit_13/Flip_7/assets/increment_button.png")
-    increment_img_hover = tk.PhotoImage(file="Unit_13/Flip_7/assets/increment_button.png")
+    increment_img = tk.PhotoImage(file=resource_path("assets/increment_button.png"))
+    increment_img_hover = tk.PhotoImage(file=resource_path("assets/increment_button.png"))
 
-    start_img = tk.PhotoImage(file="Unit_13/Flip_7/assets/start_button.png")
-    start_img_hover = tk.PhotoImage(file="Unit_13/Flip_7/assets/start_button.png")
+    start_img = tk.PhotoImage(file=resource_path("assets/start_button.png"))
+    start_img_hover = tk.PhotoImage(file=resource_path("assets/start_button.png"))
 
     def on_enter_in(e):
         e.widget.config(image=increment_img_hover)
@@ -175,7 +176,7 @@ def draw_start_text(canvas: tk.Canvas):
     canvas.create_text(645, 365+20, text=f"Players: {PLAYERS}", font=("Helvetica", 20), fill="white")
 
 def load_card_image(card_value: int) -> tk.PhotoImage:
-    img_path = f"Unit_13/Flip_7/assets/{card_value}_card.png"
+    img_path = resource_path(f"assets/{card_value}_card.png")
     card_image = tk.PhotoImage(file=img_path)
     card_images.append(card_image)
     return card_image
@@ -189,7 +190,7 @@ def draw_round(canvas: tk.Canvas, round_num: int):
     round_label.place(x=800, y=35)
 
 def draw_title(canvas: tk.Canvas):
-    logo = tk.PhotoImage(file="Unit_13/Flip_7/assets/flip_7_logo.png")
+    logo = tk.PhotoImage(file=resource_path("assets/flip_7_logo.png"))
     card_images.append(logo)
     canvas.create_image(480, 12, anchor="nw", image=logo)
 
@@ -225,7 +226,7 @@ def draw_hand(canvas: tk.Canvas, x: int, y: int, bg_color, outline_color, hand: 
 
     if len(hand) == 0:
         for i in range(player.card_num):
-            card_back = tk.PhotoImage(file="Unit_13/Flip_7/assets/card_back.png")
+            card_back = tk.PhotoImage(file=resource_path("assets/card_back.png"))
             card_images.append(card_back)
             canvas.create_image(x + 32 + i * (7 + card_back.width()), y + 28, anchor="nw", image=card_back)
 
@@ -237,7 +238,7 @@ def draw_end_screen(canvas: tk.Canvas, winner_num: int, score: int):
     for child in canvas.winfo_children(): # clearing my tech debt 💀
         child.destroy()
 
-    img = tk.PhotoImage(file="Unit_13/Flip_7/assets/end_screen.png")
+    img = tk.PhotoImage(file=resource_path("assets/end_screen.png"))
     card_images.append(img)
     canvas.create_image(0, 0, anchor="nw", image=img)
     canvas.create_text(200, 200, text=f"Player {winner_num} with a score of {score} has won!", font=("Helvetica", 40), fill="white", anchor="nw")
