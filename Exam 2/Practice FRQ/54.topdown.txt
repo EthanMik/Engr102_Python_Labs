@@ -1,0 +1,8 @@
+top
+
+Input user data, and data out flag
+catagorize data into strings ex: date, time, locaton
+write data to csv
+read from csv and depending on flag output data type 
+
+bottom

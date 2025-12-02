@@ -1,0 +1,27 @@
+from ENGR102 import isprime
+
+nums = []
+
+num = None
+for i in range(2):
+    try:
+        if i == 0: num = int(input("Enter an integer: "))
+        else: num = int(input("Enter another integer: "))
+        nums.append(num)
+    except:
+        while True:
+            try:
+                num = int(input("Bad input! Try again: "))
+                nums.append(num)
+                break
+            except: pass
+
+primes = [];
+
+for num in range(min(nums), max(nums) + 1):
+    if num % 2 != 0 and isprime(num):
+        primes.append(num)
+
+
+if len(primes) > 0: print(f"Primes: {primes}")
+else: print("No primes found!")
