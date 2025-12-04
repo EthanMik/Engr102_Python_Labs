@@ -1,12 +1,22 @@
 import numpy as np
 
-# numpy tutorial for retards
+header = []
+rows = []
 
-# step 1 declare
-a = np.zeros(12).reshape(3, 4)
-b = np.arange(12).reshape(3, 4)
-c = np.linspace(0, 12, 12).reshape(3, 4)
+with open("data.dat", 'r') as file:
+    for line in file:
+        line = line.strip()
 
-print(a)
-print(b)
-print(c)
+        if line[0] == '#':
+            header.append(line.strip())
+        else:
+            parts = line.split(',')
+            rows.append([float(part) for part in parts])
+
+data = np.array(rows)
+
+max_temp = data[:, 1].max()
+max_wind = data[:, 2].min()
+
+print(f"Max temp is {max_temp}")
+print(f"Max wind is {max_wind}")
